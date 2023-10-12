@@ -1,0 +1,1505 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Bytová situace pracovníků FA Kudlov v letech 1946, 1954 a 1969</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/1946Kategoriezamstnn_1.js"></script>
+        <script src="data/1946Pohlav_2.js"></script>
+        <script src="data/1946Roknarozen_3.js"></script>
+        <script src="data/1954Kategoriezamstnn_4.js"></script>
+        <script src="data/1954Pohlav_5.js"></script>
+        <script src="data/1954Potebanovhobydlen_6.js"></script>
+        <script src="data/1954Roknarozen_7.js"></script>
+        <script src="data/1969Pohlav_8.js"></script>
+        <script src="data/1969Roknarozen_9.js"></script>
+        <script src="data/1969Kategoriezamstnn_10.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ff0019',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ff0019',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[49.175442558352294,17.5751428015148],[49.271738488515794,17.782579076353116]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_1946Kategoriezamstnn_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1946Kategoriezamstnn_1_0(feature) {
+            switch(String(feature.properties['zaměstn_1'])) {
+                case '0':
+                    return {
+                pane: 'pane_1946Kategoriezamstnn_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(157,157,129,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1':
+                    return {
+                pane: 'pane_1946Kategoriezamstnn_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,255,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_1946Kategoriezamstnn_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_1946Kategoriezamstnn_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_1946Kategoriezamstnn_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,209,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1946Kategoriezamstnn_1');
+        map.getPane('pane_1946Kategoriezamstnn_1').style.zIndex = 401;
+        map.getPane('pane_1946Kategoriezamstnn_1').style['mix-blend-mode'] = 'normal';
+        var layer_1946Kategoriezamstnn_1 = new L.geoJson(json_1946Kategoriezamstnn_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1946Kategoriezamstnn_1',
+            layerName: 'layer_1946Kategoriezamstnn_1',
+            pane: 'pane_1946Kategoriezamstnn_1',
+            onEachFeature: pop_1946Kategoriezamstnn_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1946Kategoriezamstnn_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1946Kategoriezamstnn_1);
+        function pop_1946Pohlav_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1946Pohlav_2_0(feature) {
+            switch(String(feature.properties['Pohlaví'])) {
+                case 'M':
+                    return {
+                pane: 'pane_1946Pohlav_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,177,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Z':
+                    return {
+                pane: 'pane_1946Pohlav_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,177,203,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1946Pohlav_2');
+        map.getPane('pane_1946Pohlav_2').style.zIndex = 402;
+        map.getPane('pane_1946Pohlav_2').style['mix-blend-mode'] = 'normal';
+        var layer_1946Pohlav_2 = new L.geoJson(json_1946Pohlav_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1946Pohlav_2',
+            layerName: 'layer_1946Pohlav_2',
+            pane: 'pane_1946Pohlav_2',
+            onEachFeature: pop_1946Pohlav_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1946Pohlav_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1946Pohlav_2);
+        function pop_1946Roknarozen_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1946Roknarozen_3_0(feature) {
+            if (feature.properties['rok naroze'] >= 1905.000000 && feature.properties['rok naroze'] <= 1910.000000 ) {
+                return {
+                pane: 'pane_1946Roknarozen_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,1,84,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1911.000000 && feature.properties['rok naroze'] <= 1920.000000 ) {
+                return {
+                pane: 'pane_1946Roknarozen_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,144,141,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1921.000000 && feature.properties['rok naroze'] <= 1930.000000 ) {
+                return {
+                pane: 'pane_1946Roknarozen_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,231,37,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_1946Roknarozen_3');
+        map.getPane('pane_1946Roknarozen_3').style.zIndex = 403;
+        map.getPane('pane_1946Roknarozen_3').style['mix-blend-mode'] = 'normal';
+        var layer_1946Roknarozen_3 = new L.geoJson(json_1946Roknarozen_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1946Roknarozen_3',
+            layerName: 'layer_1946Roknarozen_3',
+            pane: 'pane_1946Roknarozen_3',
+            onEachFeature: pop_1946Roknarozen_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1946Roknarozen_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1946Roknarozen_3);
+        function pop_1954Kategoriezamstnn_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Počet rodinných príslušníku</th>\
+                        <td>' + (feature.properties['čl.rod.'] !== null ? autolinker.link(feature.properties['čl.rod.'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - město</th>\
+                        <td>' + (feature.properties['adresa'] !== null ? autolinker.link(feature.properties['adresa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - ulice</th>\
+                        <td>' + (feature.properties['adresa Got'] !== null ? autolinker.link(feature.properties['adresa Got'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Typ ubytování</th>\
+                        <td>' + (feature.properties['počet mí'] !== null ? autolinker.link(feature.properties['počet mí'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potřeba nového ubytování</th>\
+                        <td>' + (feature.properties['potřeba'] !== null ? autolinker.link(feature.properties['potřeba'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1954Kategoriezamstnn_4_0(feature) {
+            switch(String(feature.properties['zaměstn_1'])) {
+                case '0':
+                    return {
+                pane: 'pane_1954Kategoriezamstnn_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(157,157,129,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1':
+                    return {
+                pane: 'pane_1954Kategoriezamstnn_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,255,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_1954Kategoriezamstnn_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_1954Kategoriezamstnn_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_1954Kategoriezamstnn_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,209,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1954Kategoriezamstnn_4');
+        map.getPane('pane_1954Kategoriezamstnn_4').style.zIndex = 404;
+        map.getPane('pane_1954Kategoriezamstnn_4').style['mix-blend-mode'] = 'normal';
+        var layer_1954Kategoriezamstnn_4 = new L.geoJson(json_1954Kategoriezamstnn_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1954Kategoriezamstnn_4',
+            layerName: 'layer_1954Kategoriezamstnn_4',
+            pane: 'pane_1954Kategoriezamstnn_4',
+            onEachFeature: pop_1954Kategoriezamstnn_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1954Kategoriezamstnn_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1954Kategoriezamstnn_4);
+        map.addLayer(layer_1954Kategoriezamstnn_4);
+        function pop_1954Pohlav_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Počet rodinných príslušníku</th>\
+                        <td>' + (feature.properties['čl.rod.'] !== null ? autolinker.link(feature.properties['čl.rod.'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - město</th>\
+                        <td>' + (feature.properties['adresa'] !== null ? autolinker.link(feature.properties['adresa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - ulice</th>\
+                        <td>' + (feature.properties['adresa Got'] !== null ? autolinker.link(feature.properties['adresa Got'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Typ ubytování</th>\
+                        <td>' + (feature.properties['počet mí'] !== null ? autolinker.link(feature.properties['počet mí'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potřeba nového ubytování</th>\
+                        <td>' + (feature.properties['potřeba'] !== null ? autolinker.link(feature.properties['potřeba'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1954Pohlav_5_0(feature) {
+            switch(String(feature.properties['Pohlaví'])) {
+                case 'M':
+                    return {
+                pane: 'pane_1954Pohlav_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,177,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Z':
+                    return {
+                pane: 'pane_1954Pohlav_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,177,203,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1954Pohlav_5');
+        map.getPane('pane_1954Pohlav_5').style.zIndex = 405;
+        map.getPane('pane_1954Pohlav_5').style['mix-blend-mode'] = 'normal';
+        var layer_1954Pohlav_5 = new L.geoJson(json_1954Pohlav_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1954Pohlav_5',
+            layerName: 'layer_1954Pohlav_5',
+            pane: 'pane_1954Pohlav_5',
+            onEachFeature: pop_1954Pohlav_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1954Pohlav_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1954Pohlav_5);
+        function pop_1954Potebanovhobydlen_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Počet rodinných príslušníku</th>\
+                        <td>' + (feature.properties['čl.rod.'] !== null ? autolinker.link(feature.properties['čl.rod.'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - město</th>\
+                        <td>' + (feature.properties['adresa'] !== null ? autolinker.link(feature.properties['adresa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - ulice</th>\
+                        <td>' + (feature.properties['adresa Got'] !== null ? autolinker.link(feature.properties['adresa Got'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Typ ubytování</th>\
+                        <td>' + (feature.properties['počet mí'] !== null ? autolinker.link(feature.properties['počet mí'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potřeba nového ubytování</th>\
+                        <td>' + (feature.properties['potřeba'] !== null ? autolinker.link(feature.properties['potřeba'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1954Potebanovhobydlen_6_0(feature) {
+            switch(String(feature.properties['potřeba'])) {
+                case 'ano':
+                    return {
+                pane: 'pane_1954Potebanovhobydlen_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,90,189,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'ne':
+                    return {
+                pane: 'pane_1954Potebanovhobydlen_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,233,109,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_1954Potebanovhobydlen_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,230,218,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1954Potebanovhobydlen_6');
+        map.getPane('pane_1954Potebanovhobydlen_6').style.zIndex = 406;
+        map.getPane('pane_1954Potebanovhobydlen_6').style['mix-blend-mode'] = 'normal';
+        var layer_1954Potebanovhobydlen_6 = new L.geoJson(json_1954Potebanovhobydlen_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1954Potebanovhobydlen_6',
+            layerName: 'layer_1954Potebanovhobydlen_6',
+            pane: 'pane_1954Potebanovhobydlen_6',
+            onEachFeature: pop_1954Potebanovhobydlen_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1954Potebanovhobydlen_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1954Potebanovhobydlen_6);
+        function pop_1954Roknarozen_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Počet rodinných príslušníku</th>\
+                        <td>' + (feature.properties['čl.rod.'] !== null ? autolinker.link(feature.properties['čl.rod.'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - město</th>\
+                        <td>' + (feature.properties['adresa'] !== null ? autolinker.link(feature.properties['adresa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adresa - ulice</th>\
+                        <td>' + (feature.properties['adresa Got'] !== null ? autolinker.link(feature.properties['adresa Got'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Typ ubytování</th>\
+                        <td>' + (feature.properties['počet mí'] !== null ? autolinker.link(feature.properties['počet mí'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potřeba nového ubytování</th>\
+                        <td>' + (feature.properties['potřeba'] !== null ? autolinker.link(feature.properties['potřeba'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1954Roknarozen_7_0(feature) {
+            if (feature.properties['rok naroze'] >= 1887.000000 && feature.properties['rok naroze'] <= 1900.000000 ) {
+                return {
+                pane: 'pane_1954Roknarozen_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,1,84,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1901.000000 && feature.properties['rok naroze'] <= 1910.000000 ) {
+                return {
+                pane: 'pane_1954Roknarozen_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(59,82,139,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1911.000000 && feature.properties['rok naroze'] <= 1920.000000 ) {
+                return {
+                pane: 'pane_1954Roknarozen_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,144,141,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1921.000000 && feature.properties['rok naroze'] <= 1930.000000 ) {
+                return {
+                pane: 'pane_1954Roknarozen_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,201,99,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1931.000000 && feature.properties['rok naroze'] <= 1940.000000 ) {
+                return {
+                pane: 'pane_1954Roknarozen_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,231,37,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_1954Roknarozen_7');
+        map.getPane('pane_1954Roknarozen_7').style.zIndex = 407;
+        map.getPane('pane_1954Roknarozen_7').style['mix-blend-mode'] = 'normal';
+        var layer_1954Roknarozen_7 = new L.geoJson(json_1954Roknarozen_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1954Roknarozen_7',
+            layerName: 'layer_1954Roknarozen_7',
+            pane: 'pane_1954Roknarozen_7',
+            onEachFeature: pop_1954Roknarozen_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1954Roknarozen_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1954Roknarozen_7);
+        function pop_1969Pohlav_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kolonie Švermova-číslo popisné</th>\
+                        <td>' + (feature.properties['Kolonka_č'] !== null ? autolinker.link(feature.properties['Kolonka_č'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1969Pohlav_8_0(feature) {
+            switch(String(feature.properties['Pohlaví'])) {
+                case 'M':
+                    return {
+                pane: 'pane_1969Pohlav_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,177,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Z':
+                    return {
+                pane: 'pane_1969Pohlav_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,177,203,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1969Pohlav_8');
+        map.getPane('pane_1969Pohlav_8').style.zIndex = 408;
+        map.getPane('pane_1969Pohlav_8').style['mix-blend-mode'] = 'normal';
+        var layer_1969Pohlav_8 = new L.geoJson(json_1969Pohlav_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1969Pohlav_8',
+            layerName: 'layer_1969Pohlav_8',
+            pane: 'pane_1969Pohlav_8',
+            onEachFeature: pop_1969Pohlav_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1969Pohlav_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1969Pohlav_8);
+        function pop_1969Roknarozen_9(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kolonie Švermova-číslo popisné</th>\
+                        <td>' + (feature.properties['Kolonka_č'] !== null ? autolinker.link(feature.properties['Kolonka_č'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1969Roknarozen_9_0(feature) {
+            if (feature.properties['rok naroze'] >= 1899.000000 && feature.properties['rok naroze'] <= 1910.000000 ) {
+                return {
+                pane: 'pane_1969Roknarozen_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,1,84,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1911.000000 && feature.properties['rok naroze'] <= 1920.000000 ) {
+                return {
+                pane: 'pane_1969Roknarozen_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(59,82,139,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1921.000000 && feature.properties['rok naroze'] <= 1930.000000 ) {
+                return {
+                pane: 'pane_1969Roknarozen_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,144,141,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1931.000000 && feature.properties['rok naroze'] <= 1940.000000 ) {
+                return {
+                pane: 'pane_1969Roknarozen_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,201,99,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['rok naroze'] >= 1941.000000 && feature.properties['rok naroze'] <= 1954.000000 ) {
+                return {
+                pane: 'pane_1969Roknarozen_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,231,37,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_1969Roknarozen_9');
+        map.getPane('pane_1969Roknarozen_9').style.zIndex = 409;
+        map.getPane('pane_1969Roknarozen_9').style['mix-blend-mode'] = 'normal';
+        var layer_1969Roknarozen_9 = new L.geoJson(json_1969Roknarozen_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1969Roknarozen_9',
+            layerName: 'layer_1969Roknarozen_9',
+            pane: 'pane_1969Roknarozen_9',
+            onEachFeature: pop_1969Roknarozen_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1969Roknarozen_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1969Roknarozen_9);
+        function pop_1969Kategoriezamstnn_10(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstná'] !== null ? autolinker.link(feature.properties['zaměstná'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rok narození</th>\
+                        <td>' + (feature.properties['rok naroze'] !== null ? autolinker.link(feature.properties['rok naroze'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kategorie zaměstnání</th>\
+                        <td>' + (feature.properties['zaměstn_1'] !== null ? autolinker.link(feature.properties['zaměstn_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kolonie Švermova-číslo popisné</th>\
+                        <td>' + (feature.properties['Kolonka_č'] !== null ? autolinker.link(feature.properties['Kolonka_č'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pohlaví</th>\
+                        <td>' + (feature.properties['Pohlaví'] !== null ? autolinker.link(feature.properties['Pohlaví'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1969Kategoriezamstnn_10_0(feature) {
+            switch(String(feature.properties['zaměstn_1'])) {
+                case '0':
+                    return {
+                pane: 'pane_1969Kategoriezamstnn_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(157,157,129,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1':
+                    return {
+                pane: 'pane_1969Kategoriezamstnn_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,255,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_1969Kategoriezamstnn_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_1969Kategoriezamstnn_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,138,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_1969Kategoriezamstnn_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,209,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_1969Kategoriezamstnn_10');
+        map.getPane('pane_1969Kategoriezamstnn_10').style.zIndex = 410;
+        map.getPane('pane_1969Kategoriezamstnn_10').style['mix-blend-mode'] = 'normal';
+        var layer_1969Kategoriezamstnn_10 = new L.geoJson(json_1969Kategoriezamstnn_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_1969Kategoriezamstnn_10',
+            layerName: 'layer_1969Kategoriezamstnn_10',
+            pane: 'pane_1969Kategoriezamstnn_10',
+            onEachFeature: pop_1969Kategoriezamstnn_10,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_1969Kategoriezamstnn_10_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_1969Kategoriezamstnn_10);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Bytová situace pracovníků FA Kudlov v letech 1946, 1954 a 1969</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'topright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Bytová situace pracovníků pracovníků FA Kudlov v letech 1946, 1954 a 1969. ';
+            };
+            abstract.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'1969 Kategorie zaměstnání<br /><table><tr><td style="text-align: center;"><img src="legend/1969Kategoriezamstnn_10_vdomácnostivdůchodu0.png" /></td><td>v domácnosti, v důchodu</td></tr><tr><td style="text-align: center;"><img src="legend/1969Kategoriezamstnn_10_administrativatechnikazázemí1.png" /></td><td>administrativa, technika, zázemí</td></tr><tr><td style="text-align: center;"><img src="legend/1969Kategoriezamstnn_10_laboratoře2.png" /></td><td>laboratoře</td></tr><tr><td style="text-align: center;"><img src="legend/1969Kategoriezamstnn_10_kreativnípráce3.png" /></td><td>kreativní práce</td></tr><tr><td style="text-align: center;"><img src="legend/1969Kategoriezamstnn_10_nefilmovípracovníci4.png" /></td><td>nefilmoví pracovníci</td></tr></table>': layer_1969Kategoriezamstnn_10,'1969 Rok narození<br /><table><tr><td style="text-align: center;"><img src="legend/1969Roknarozen_9_189919100.png" /></td><td>1899 - 1910</td></tr><tr><td style="text-align: center;"><img src="legend/1969Roknarozen_9_191119201.png" /></td><td>1911 - 1920</td></tr><tr><td style="text-align: center;"><img src="legend/1969Roknarozen_9_192119302.png" /></td><td>1921 - 1930</td></tr><tr><td style="text-align: center;"><img src="legend/1969Roknarozen_9_193119403.png" /></td><td>1931 - 1940</td></tr><tr><td style="text-align: center;"><img src="legend/1969Roknarozen_9_194119544.png" /></td><td>1941 - 1954</td></tr></table>': layer_1969Roknarozen_9,'1969 Pohlaví<br /><table><tr><td style="text-align: center;"><img src="legend/1969Pohlav_8_Muž0.png" /></td><td>Muž</td></tr><tr><td style="text-align: center;"><img src="legend/1969Pohlav_8_Žena1.png" /></td><td>Žena</td></tr></table>': layer_1969Pohlav_8,'1954 Rok narození<br /><table><tr><td style="text-align: center;"><img src="legend/1954Roknarozen_7_188719000.png" /></td><td>1887 - 1900</td></tr><tr><td style="text-align: center;"><img src="legend/1954Roknarozen_7_190119101.png" /></td><td>1901 - 1910</td></tr><tr><td style="text-align: center;"><img src="legend/1954Roknarozen_7_191119202.png" /></td><td>1911 - 1920</td></tr><tr><td style="text-align: center;"><img src="legend/1954Roknarozen_7_192119303.png" /></td><td>1921 - 1930</td></tr><tr><td style="text-align: center;"><img src="legend/1954Roknarozen_7_193119404.png" /></td><td>1931 - 1940</td></tr></table>': layer_1954Roknarozen_7,'1954 Potřeba nového bydlení<br /><table><tr><td style="text-align: center;"><img src="legend/1954Potebanovhobydlen_6_ano0.png" /></td><td>ano</td></tr><tr><td style="text-align: center;"><img src="legend/1954Potebanovhobydlen_6_ne1.png" /></td><td>ne</td></tr><tr><td style="text-align: center;"><img src="legend/1954Potebanovhobydlen_6_neuvedeno2.png" /></td><td>neuvedeno</td></tr></table>': layer_1954Potebanovhobydlen_6,'1954 Pohlaví<br /><table><tr><td style="text-align: center;"><img src="legend/1954Pohlav_5_Muž0.png" /></td><td>Muž</td></tr><tr><td style="text-align: center;"><img src="legend/1954Pohlav_5_Žena1.png" /></td><td>Žena</td></tr></table>': layer_1954Pohlav_5,'1954 Kategorie zaměstnání<br /><table><tr><td style="text-align: center;"><img src="legend/1954Kategoriezamstnn_4_vdomácnostivdůchodu0.png" /></td><td>v domácnosti, v důchodu</td></tr><tr><td style="text-align: center;"><img src="legend/1954Kategoriezamstnn_4_administrativatechnikazázemí1.png" /></td><td>administrativa, technika, zázemí</td></tr><tr><td style="text-align: center;"><img src="legend/1954Kategoriezamstnn_4_laboratoře2.png" /></td><td>laboratoře</td></tr><tr><td style="text-align: center;"><img src="legend/1954Kategoriezamstnn_4_kreativnípráce3.png" /></td><td>kreativní práce</td></tr><tr><td style="text-align: center;"><img src="legend/1954Kategoriezamstnn_4_nefilmovípracovníci4.png" /></td><td>nefilmoví pracovníci</td></tr></table>': layer_1954Kategoriezamstnn_4,'1946 Rok narození<br /><table><tr><td style="text-align: center;"><img src="legend/1946Roknarozen_3_190519100.png" /></td><td>1905 - 1910</td></tr><tr><td style="text-align: center;"><img src="legend/1946Roknarozen_3_191119201.png" /></td><td>1911 - 1920</td></tr><tr><td style="text-align: center;"><img src="legend/1946Roknarozen_3_192119302.png" /></td><td>1921 - 1930</td></tr></table>': layer_1946Roknarozen_3,'1946 Pohlaví<br /><table><tr><td style="text-align: center;"><img src="legend/1946Pohlav_2_Muž0.png" /></td><td>Muž</td></tr><tr><td style="text-align: center;"><img src="legend/1946Pohlav_2_Žena1.png" /></td><td>Žena</td></tr></table>': layer_1946Pohlav_2,'1946 Kategorie zaměstnání<br /><table><tr><td style="text-align: center;"><img src="legend/1946Kategoriezamstnn_1_vdomácnostivdůchodu0.png" /></td><td>v domácnosti, v důchodu</td></tr><tr><td style="text-align: center;"><img src="legend/1946Kategoriezamstnn_1_administrativatechnikazázemí1.png" /></td><td>administrativa, technika, zázemí</td></tr><tr><td style="text-align: center;"><img src="legend/1946Kategoriezamstnn_1_laboratoře2.png" /></td><td>laboratoře</td></tr><tr><td style="text-align: center;"><img src="legend/1946Kategoriezamstnn_1_kreativnípráce3.png" /></td><td>kreativní práce</td></tr><tr><td style="text-align: center;"><img src="legend/1946Kategoriezamstnn_1_nefilmovípracovníci4.png" /></td><td>nefilmoví pracovníci</td></tr></table>': layer_1946Kategoriezamstnn_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"Pohlaví": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Pohlav = document.createElement('div');
+            div_Pohlav.id = "div_Pohlav";
+            div_Pohlav.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Pohlav);
+            sel_Pohlav = document.createElement('select');
+            sel_Pohlav.multiple = true;
+            sel_Pohlav.size = 2;
+            sel_Pohlav.id = "sel_Pohlav";
+            var Pohlav_options_str = "<option value='' unselected></option>";
+            sel_Pohlav.onchange = function(){filterFunc()};
+            Pohlav_options_str  += '<option value="M">M</option>';
+            Pohlav_options_str  += '<option value="Z">Z</option>';
+            sel_Pohlav.innerHTML = Pohlav_options_str;
+            div_Pohlav.appendChild(sel_Pohlav);
+            var lab_Pohlav = document.createElement('div');
+            lab_Pohlav.innerHTML = 'Pohlaví';
+            lab_Pohlav.className = 'filterlabel';
+            div_Pohlav.appendChild(lab_Pohlav);
+            var reset_Pohlav = document.createElement('div');
+            reset_Pohlav.innerHTML = 'clear filter';
+            reset_Pohlav.className = 'filterlabel';
+            reset_Pohlav.onclick = function() {
+                var options = document.getElementById("sel_Pohlav").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Pohlav.appendChild(reset_Pohlav);
+        </script>
+    </body>
+</html>
